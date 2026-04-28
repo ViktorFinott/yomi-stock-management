@@ -1,120 +1,15 @@
-import type { InventoryItem } from "./types"
+import { supabase } from "./supabase"
 
-// Mock inventory data
-export const MOCK_INVENTORY: InventoryItem[] = [
-  {
-    id: "1",
-    name: "Dell Laptop XPS 15",
-    category: "Hardware",
-    quantity: 25,
-    minQuantity: 10,
-    location: "Warehouse A - Shelf 3",
-    supplier: "Dell Inc.",
-    price: 1299.99,
-    lastUpdated: new Date("2025-01-15"),
-    status: "in-stock",
-    description: "High-performance laptop for development",
-  },
-  {
-    id: "2",
-    name: "Logitech MX Master 3",
-    category: "Accessories",
-    quantity: 8,
-    minQuantity: 15,
-    location: "Warehouse B - Shelf 1",
-    supplier: "Logitech",
-    price: 99.99,
-    lastUpdated: new Date("2025-01-10"),
-    status: "low-stock",
-    description: "Wireless mouse for productivity",
-  },
-  {
-    id: "3",
-    name: "Microsoft Office 365",
-    category: "Software",
-    quantity: 100,
-    minQuantity: 20,
-    location: "Digital Licenses",
-    supplier: "Microsoft",
-    price: 149.99,
-    lastUpdated: new Date("2025-01-20"),
-    status: "in-stock",
-    description: "Annual subscription licenses",
-  },
-  {
-    id: "4",
-    name: "Cisco Switch 24-Port",
-    category: "Networking",
-    quantity: 0,
-    minQuantity: 5,
-    location: "Warehouse A - Shelf 5",
-    supplier: "Cisco Systems",
-    price: 499.99,
-    lastUpdated: new Date("2025-01-05"),
-    status: "out-of-stock",
-    description: "Managed network switch",
-  },
-  {
-    id: "5",
-    name: 'Samsung Monitor 27"',
-    category: "Hardware",
-    quantity: 45,
-    minQuantity: 20,
-    location: "Warehouse B - Shelf 4",
-    supplier: "Samsung",
-    price: 299.99,
-    lastUpdated: new Date("2025-01-18"),
-    status: "in-stock",
-    description: "4K UHD display",
-  },
-  {
-    id: "6",
-    name: "USB-C Hub",
-    category: "Accessories",
-    quantity: 12,
-    minQuantity: 10,
-    location: "Warehouse A - Shelf 2",
-    supplier: "Anker",
-    price: 49.99,
-    lastUpdated: new Date("2025-01-12"),
-    status: "in-stock",
-    description: "Multi-port USB-C adapter",
-  },
-  {
-    id: "7",
-    name: "Adobe Creative Cloud",
-    category: "Software",
-    quantity: 30,
-    minQuantity: 10,
-    location: "Digital Licenses",
-    supplier: "Adobe",
-    price: 599.99,
-    lastUpdated: new Date("2025-01-22"),
-    status: "in-stock",
-    description: "Annual subscription for design team",
-  },
-  {
-    id: "8",
-    name: "Cat6 Ethernet Cable (100ft)",
-    category: "Networking",
-    quantity: 5,
-    minQuantity: 15,
-    location: "Warehouse B - Shelf 2",
-    supplier: "Cable Matters",
-    price: 29.99,
-    lastUpdated: new Date("2025-01-08"),
-    status: "low-stock",
-    description: "Network cables for installations",
-  },
-]
+export async function getInventory() {
+  const { data, error } = await supabase
+    .from("inventory")
+    .select("*")
+    .order("name")
 
-// Helper function to get inventory statistics
-export function getInventoryStats(items: InventoryItem[]) {
-  return {
-    total: items.length,
-    inStock: items.filter((item) => item.status === "in-stock").length,
-    lowStock: items.filter((item) => item.status === "low-stock").length,
-    outOfStock: items.filter((item) => item.status === "out-of-stock").length,
-    totalValue: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+  if (error) {
+    console.error(error)
+    return []
   }
+
+  return data
 }
