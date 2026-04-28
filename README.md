@@ -198,3 +198,4 @@ Este projeto é privado e de uso exclusivo da equipe Yomi.
 \`\`\`
 
 \`\`\`plaintext file="" isHidden
+"# yomi-stock-management" 
