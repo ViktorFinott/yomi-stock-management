@@ -50,3 +50,5 @@ Thumbs.db
 # misc
 *.log
 *.cache
+
+.vercel
